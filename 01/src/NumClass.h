@@ -3,7 +3,7 @@
 
 #define RADIX 10
 
-int isArmstrong(unsigned int);
-int isPalindrome(unsigned int);
-int isPrime(unsigned int);
-int isStrong(unsigned int);
+int isArmstrong(int);
+int isPalindrome(int);
+int isPrime(int);
+int isStrong(int);
