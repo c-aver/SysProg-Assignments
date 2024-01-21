@@ -10,9 +10,9 @@ LR = libclassrec
 .PHONY: clean loops loopd recursives recuresived all
 .SUFFIXES:
 
-all: mains maindloop maindrec
+all: loops loopd recursives recursived mains maindloop maindrec
 
-mains: main.o $(LL).a
+mains: main.o $(LR).a
 	$(CC) $(CCFLAGS) -o $@ $^
 
 maindloop: main.o $(LL).so
