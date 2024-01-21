@@ -29,7 +29,7 @@ def test_output_vs_expected(prog , input_f , expected_f):
         passed = 0
         run_cmd("cat tmp_out.txt")
         run_cmd("cat " + expected_f )
-    # run_cmd("rm tmp_out.txt" , 0)
+    run_cmd("rm tmp_out.txt" , 0)
 
 def test_all(prog):
     test_output_vs_expected(prog , "./inputs/input1.txt" , "./outputs/output1.txt")
