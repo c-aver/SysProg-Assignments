@@ -36,7 +36,7 @@ def test_all(prog):
     test_output_vs_expected(prog , "./inputs/input2.txt" , "./outputs/output2.txt")
     test_output_vs_expected(prog , "./inputs/input3.txt" , "./outputs/output3.txt")
     test_output_vs_expected(prog , "./inputs/input4.txt" , "./outputs/output4.txt")
-    # test_output_vs_expected(prog , "./inputs/input5.txt" , "./outputs/output5.txt")
+    test_output_vs_expected(prog , "./inputs/input5.txt" , "./outputs/output5.txt")
 
 def main():
     test_all("src/mains")
