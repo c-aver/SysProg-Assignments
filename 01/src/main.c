@@ -2,7 +2,33 @@
 
 #include "NumClass.h"
 
-void check_primes(unsigned int min, unsigned int max)
+void print_armstrongs(unsigned int min, unsigned int max)
+{
+	printf("The Armstrong numbers are:");
+	for (unsigned int i = min; i <= max; ++i)
+	{
+		if (isArmstrong(i))
+		{
+			printf(" %u", i);
+		}
+	}
+	printf("\n");
+}
+
+void print_palindromes(unsigned int min, unsigned int max)
+{
+	printf("The Palindromes are:");
+	for (unsigned int i = min; i <= max; ++i)
+	{
+		if (isPalindrome(i))
+		{
+			printf(" %u", i);
+		}
+	}
+	printf("\n");
+}
+
+void print_primes(unsigned int min, unsigned int max)
 {
 	printf("The Prime numbers are:");
 	for (unsigned int i = min; i <= max; ++i)
@@ -15,7 +41,7 @@ void check_primes(unsigned int min, unsigned int max)
 	printf("\n");
 }
 
-void check_strongs(unsigned int min, unsigned int max)
+void print_strongs(unsigned int min, unsigned int max)
 {
 	printf("The Strong numbers are:");
 	for (unsigned int i = min; i <= max; ++i)
@@ -32,9 +58,9 @@ int main(void)
 {
 	unsigned int min, max;
 	scanf("%u %u", &min, &max);
-	// check_armstrongs(min, max);
-	// check_palindromes(min, max);
-	check_primes(min, max);
-	check_strongs(min, max);
+	print_armstrongs(min, max);
+	print_palindromes(min, max);
+	print_primes(min, max);
+	print_strongs(min, max);
 	return 0;
 }

@@ -2,8 +2,8 @@
 
 int isPrime(int n)
 {
-	if (n == 0) return FALSE;			// by definition, by assignment definition 1 IS prime
-	for (int i = 2; i*i <= n; ++i)		// run through all number up to sqrt(n)
+	if (n == 0) return FALSE;			// by assignment definition 1 IS prime
+	for (int i = 2; i*i <= n; ++i)			// run through all number up to and including sqrt(n)
 	{
 		if (n % i == 0) return FALSE;		// if the number divides n it is not prime
 	}

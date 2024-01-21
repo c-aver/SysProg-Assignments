@@ -1,13 +1,13 @@
 CC = gcc
 CCFLAGS = -Wall -Wextra -ggdb
 NCH = NumClass.h
-BC = BasicClassification
+BC = basicClassification
 ACL = advancedClassificationLoop
 ACR = advancedClassificationRecursion
 LL = libclassloops
 LR = libclassrec
 
-.PHONY: clean loops loopd all
+.PHONY: clean loops loopd recursives recuresived all
 .SUFFIXES:
 
 all: mains maindloop maindrec
@@ -34,8 +34,8 @@ $(ACL).o: $(ACL).c $(NCH)
 	$(CC) -c -fPIC $(CCFLAGS) -o $@ $<
 
 loopd: $(LL).so 
-$(LL).so: $(BC).o $(NCH)
-	$(CC) -shared $(CCFLAGS) -o $@ $<
+$(LL).so: $(BC).o $(ACL).o
+	$(CC) -shared $(CCFLAGS) -o $@ $^
 
 recursives: $(LR).a
 $(LR).a: $(BC).o $(ACR).o
@@ -44,8 +44,8 @@ $(ACR).o: $(ACR).c $(NCH)
 	$(CC) -c -fPIC $(CCFLAGS) -o $@ $<
 
 recursived: $(LR).so
-$(LR).so: $(BC).o $(NCH)
-	$(CC) -shared $(CCFLAGS) -o $@ $<
+$(LR).so: $(BC).o $(ACR).o
+	$(CC) -shared $(CCFLAGS) -o $@ $^
 
 clean:
 	rm -f *.o *.a *.so mains maindloop maindrec
