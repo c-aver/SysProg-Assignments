@@ -30,22 +30,24 @@ $(BC).o: $(BC).c $(NCH)
 loops: $(LL).a
 $(LL).a: $(BC).o $(ACL).o
 	ar rcs $@ $^
-$(ACL).o: $(ACL).c $(NCH)
-	$(CC) -c -fPIC $(CCFLAGS) -o $@ $<
 
 loopd: $(LL).so 
 $(LL).so: $(BC).o $(ACL).o
 	$(CC) -shared $(CCFLAGS) -o $@ $^
 
+$(ACL).o: $(ACL).c $(NCH)
+	$(CC) -c -fPIC $(CCFLAGS) -o $@ $<
+
 recursives: $(LR).a
 $(LR).a: $(BC).o $(ACR).o
 	ar rcs $@ $^
-$(ACR).o: $(ACR).c $(NCH)
-	$(CC) -c -fPIC $(CCFLAGS) -o $@ $<
 
 recursived: $(LR).so
 $(LR).so: $(BC).o $(ACR).o
 	$(CC) -shared $(CCFLAGS) -o $@ $^
+
+$(ACR).o: $(ACR).c $(NCH)
+	$(CC) -c -fPIC $(CCFLAGS) -o $@ $<
 
 clean:
 	rm -f *.o *.a *.so mains maindloop maindrec
