@@ -6,7 +6,7 @@ ACL = advancedClassificationLoop
 ACR = advancedClassificationRecursion
 LL = libclassloops
 LR = libclassrec
-MF = makefile	# included as prerequisite to .o files to recompile everything when make changes
+MF = makefile	# included as prerequisite to .o files to recompile everything when makefile changes
 
 .PHONY: clean loops loopd recursives recuresived all
 .SUFFIXES:	# to remove all implicit rules
