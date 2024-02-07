@@ -17,5 +17,7 @@ my_mat.o: my_mat.c my_mat.h $(MF)
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 .PHONY: clean all
+.SUFFIXES:
+
 clean:
-	rm -f *.o my_graph
+	rm -f *.o my_graph my_Knapsack
