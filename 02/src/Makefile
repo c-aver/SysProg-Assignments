@@ -1,23 +1,31 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -ggdb
-MF=Makefile
+MF=Makefile		# to recompile everything when makefile changes
 
-all: my_graph my_Knapsack
+# question 1 executable
+Q1=my_graph
+# question 1 library
+Q1L=my_mat
+# question 2 executable
+Q2=my_Knapsack
 
-my_Knapsack: my_Knapsack.c
+all: $(Q1) $(Q2)
+
+# compile directly from c to executable since it does not depend on other files
+$(Q2): $(Q2).c
 	$(CC) $(CFLAGS) -o $@ $^
 
-my_graph: my_graph.o my_mat.o
+$(Q1): $(Q1).o $(Q1L).o
 	$(CC) $(CFLAGS) -o $@ $^
 
-my_graph.o: my_graph.c my_mat.h $(MF)
+$(Q1).o: $(Q1).c $(Q1L).h $(MF)
 	$(CC) -c $(CFLAGS) -o $@ $<
 
-my_mat.o: my_mat.c my_mat.h $(MF)
+$(Q1L).o: $(Q1L).c $(Q1L).h $(MF)
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 .PHONY: clean all
 .SUFFIXES:
 
 clean:
-	rm -f *.o my_graph my_Knapsack
+	rm -f *.o $(Q1) $(Q2)
