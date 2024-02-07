@@ -5,7 +5,7 @@
 
 #define C 20	// knapsack capacity
 #define N 5		// total number of items
-#define STR_MAX_LEN (20 + 1)
+#define STR_MAX_LEN (20 + 1)	// 20 for string plus 1 for null terminator
 
 void input_items(char names[N][STR_MAX_LEN], int values[N], int weights[N])
 {
@@ -15,13 +15,13 @@ void input_items(char names[N][STR_MAX_LEN], int values[N], int weights[N])
 	}
 }
 
-int max(int a, int b)
+int max(const int a, const int b)
 {
 	return a > b ? a : b;
 }
 
-// ported from https://en.wikipedia.org/wiki/Knapsack_problem#0-1_knapsack_problem
-int knapSack(int weights[N], int values[N], int selected_bool[N])
+// first part ported from https://en.wikipedia.org/wiki/Knapsack_problem#0-1_knapsack_problem
+int knapSack(const int weights[N], const int values[N], int selected_bool[N])
 {
 	int dp[N+1][C+1];
 	for (size_t c = 0; c <= C; ++c) dp[0][c] = 0;
@@ -37,6 +37,7 @@ int knapSack(int weights[N], int values[N], int selected_bool[N])
 
 	int result = dp[N][C];
 	
+	// from here on algorithm is not ported from Wikipedia but from me
 	size_t w = C;	// the current weight of the optimal solution
 	
 	for (size_t n = N; n > 0; --n)	// run backwards through the items to reconstruct solution
