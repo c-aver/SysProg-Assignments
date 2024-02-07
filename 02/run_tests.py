@@ -31,14 +31,16 @@ def test_output_vs_expected(prog , input_f , expected_f):
         run_cmd("cat " + expected_f )
     run_cmd("rm tmp_out.txt" , 0)
 
-def test_all(prog):
-    test_output_vs_expected(prog , "./inputs/input1.txt" , "./outputs/output1.txt")
-    test_output_vs_expected(prog , "./inputs/input2.txt" , "./outputs/output2.txt")
-    test_output_vs_expected(prog , "./inputs/input3.txt" , "./outputs/output3.txt")
-    test_output_vs_expected(prog , "./inputs/input4.txt" , "./outputs/output4.txt")
+def test_all(prog, input_dir, output_dir):
+    test_output_vs_expected(prog , input_dir + "/input1.txt" , output_dir + "/output1.txt")
+    test_output_vs_expected(prog , input_dir + "/input2.txt" , output_dir + "/output2.txt")
+    test_output_vs_expected(prog , input_dir + "/input3.txt" , output_dir + "/output3.txt")
+    if prog == "my_graph":  # hack
+        test_output_vs_expected(prog , input_dir + "/input4.txt" , output_dir + "/output4.txt")
 
 def main():
-    test_all("src/my_graph")
+    test_all("src/my_graph", "./inputs", "./outputs")
+    test_all("src/my_Knapsack", "./inputs_2", "./outputs_2")
 
     if passed == 1:
         print("You have PASSED the initial checks.")

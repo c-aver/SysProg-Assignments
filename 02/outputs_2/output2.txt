@@ -1,0 +1,2 @@
+Maximum profit: 290
+Selected items: b c e

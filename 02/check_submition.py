@@ -21,6 +21,7 @@ def pars_input():
             commit = line
             continue
     return git_rep , ids , commit
+
 def run_cmd(cmd , verbos = 1):
     if verbos == 1:
         print("running: " ,cmd)
@@ -49,7 +50,7 @@ def test_extra_compilation(target):
 def test_output_vs_expected(prog , input_f , expected_f):
     global passed
     run_cmd("./%s < %s > tmp_out.txt"%(prog ,input_f ))
-    if not filecmp.cmp('tmp_out.txt',expected_f ):
+    if not filecmp.cmp('tmp_out.txt',expected_f ,shallow=False):
         print("difference found in ./%s < %s vs "%(prog ,input_f) ,expected_f)
         passed = 0
         run_cmd("cat tmp_out.txt")
@@ -84,10 +85,13 @@ def main():
 
     print("running tests")   
 
-    test_output_vs_expected("connections" , "../inputs/input1.txt" , "../outputs/output1.txt")
-    test_output_vs_expected("connections" , "../inputs/input2.txt" , "../outputs/output2.txt")
-    test_output_vs_expected("connections" , "../inputs/input3.txt" , "../outputs/output3.txt")
-    test_output_vs_expected("connections" , "../inputs/input4.txt" , "../outputs/output4.txt")
+    test_output_vs_expected("my_graph" , "../inputs/input1.txt" , "../outputs/output1.txt")
+    test_output_vs_expected("my_graph" , "../inputs/input2.txt" , "../outputs/output2.txt")
+    test_output_vs_expected("my_graph" , "../inputs/input3.txt" , "../outputs/output3.txt")
+    test_output_vs_expected("my_graph" , "../inputs/input4.txt" , "../outputs/output4.txt")
+    test_output_vs_expected("my_Knapsack" , "../inputs_2/input1.txt" , "../outputs_2/output1.txt")
+    test_output_vs_expected("my_Knapsack" , "../inputs_2/input2.txt" , "../outputs_2/output2.txt")
+    test_output_vs_expected("my_Knapsack" , "../inputs_2/input3.txt" , "../outputs_2/output3.txt")
 
     if passed == 1:
         print("You have PASSED the initial checks.")
