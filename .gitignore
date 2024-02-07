@@ -55,6 +55,9 @@ dkms.conf
 01/src/mains
 01/src/maindloop
 01/src/maindrec
+02/src/my_graph
+02/src/my_knapsack
+
 
 # Vim swap files
 *.swp
