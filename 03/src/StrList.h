@@ -2,6 +2,11 @@
 
 #include <stdlib.h>
 
+#define FALSE 0
+#define TRUE 1
+
+#define MAX_STR_LEN 20		// TODO: what should this be?
+
 /********************************************************************************
  *
  * A StrList library.
@@ -82,6 +87,11 @@ void StrList_remove(StrList* StrList, const char* data);
 	Given an index and a list, remove the string at that index.
 */
 void StrList_removeAt(StrList* StrList, int index);
+
+/*
+	Given a list, remove all elements
+*/
+void StrList_removeAll(StrList* StrList);
 
 /*
  * Checks if two StrLists have the same elements
