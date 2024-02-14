@@ -12,8 +12,8 @@ Q2=my_Knapsack
 all: $(Q1) $(Q2)
 
 # compile directly from c to executable since it does not depend on other files
-$(Q2): $(Q2).c
-	$(CC) $(CFLAGS) -o $@ $^
+$(Q2): $(Q2).c $(MF)
+	$(CC) $(CFLAGS) -o $@ $<
 
 $(Q1): $(Q1).o $(Q1L).o
 	$(CC) $(CFLAGS) -o $@ $^
