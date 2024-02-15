@@ -1,8 +1,20 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -ggdb
 MAIN=Main
+MF=Makefile
+LIB=StrList
 
-$(MAIN).o: $(MAIN).c
-	$(CC) $(CFLAGS) -o $@ $<
+$(LIB): $(MAIN).o $(LIB).o
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(MAIN).o: $(MAIN).c $(MF)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(LIB).o: $(LIB).c $(MF)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+clean:
+	rm *.o $(LIB)
 
 .SUFFIXES:
+.PHONY: clean
