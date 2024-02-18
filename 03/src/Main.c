@@ -26,7 +26,6 @@ char *input_str(void)
 
 		c = getchar();		// get next character
 	}
-	// TODO: realloc to exact size?
 	result[size] = '\0';	// add null terminator at the end
 	return result;			// return the result
 }
