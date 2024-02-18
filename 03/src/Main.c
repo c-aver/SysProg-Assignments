@@ -36,10 +36,10 @@ char *input_str(void)
 */
 void input_to_list(StrList *list)
 {
-
 	size_t n;
-	scanf("%zu ", &n);		// TODO: should be inputted with `A`?
-	for (size_t i = 0; i < n; ++i)
+	scanf("%zu", &n);		// TODO: should be inputted with `A`?
+	size_t prev_len = StrList_size(list);
+	while (StrList_size(list) < prev_len + n)
 	{
 		char *word = input_str();
 		if (!word)
@@ -47,7 +47,7 @@ void input_to_list(StrList *list)
 			fprintf(stderr, "Failed to allocate memory for word");
 			exit(1);
 		}
-		StrList_insertLast(list, word);		// this will copy the word so no danger in freeing it after
+		if (word[0]) StrList_insertLast(list, word);		// this will copy the word so no danger in freeing it after
 		free(word);							// free the inputted word
 	}
 }
@@ -75,7 +75,7 @@ int main(void)
 		case 2:		// insert string at specified index
 			scanf("%zu", &index);	// input insert index
 			word = input_str();		// input string
-			StrList_insertAt(list, word, index);	// insert it
+			if (word[0]) StrList_insertAt(list, word, index);	// insert it
 			free(word);		// free the allocated memory
 			break;
 		case 3:		// print the list
@@ -93,12 +93,12 @@ int main(void)
 			break;
 		case 7:		// print how many occurences of a string
 			word = input_str();		// input string
-			printf("%d\n", StrList_count(list, word)); // print number of occurences
+			if (word[0]) printf("%d\n", StrList_count(list, word)); // print number of occurences
 			free(word);		// free the allocated memory
 			break;
 		case 8:		// remove all occurences of string in list
 			word = input_str();		// input string
-			StrList_remove(list, word);	// remove occurences
+			if (word[0]) StrList_remove(list, word);	// remove occurences
 			free(word);		// free the allocated memory
 			break;
 		case 9:		// remove string at specified index
@@ -120,6 +120,9 @@ int main(void)
 		case 0:		// quit
 			quit = TRUE;
 			break;
+		default:
+			fprintf(stderr, "Uknown action: %d", action);
+			exit(1);
 		}
 	} while (!quit);
 
