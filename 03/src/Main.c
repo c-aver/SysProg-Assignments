@@ -1,14 +1,45 @@
+#include <ctype.h>
 #include <stdio.h>
 #include "StrList.h"
 
-void input_list(StrList *list)
+// this function allocates space which must be freed after using
+char *input_str(void)
 {
-	size_t n = 10;		// TODO: input this from the user when presses `A`?
+	size_t curr_cap = 1, curr_size = 0;
+	char *result = calloc(curr_cap, sizeof(char));
+	if (!result) return NULL;
+	char c = getchar();
+	while (c != EOF && !isspace(c))
+	{
+		if (curr_size >= curr_cap - 1)	// make sure there is space for the new character, -1 for null terminator we will insert at the end
+		{
+			curr_cap *= 2;		// double capacity
+			result = reallocarray(result, curr_cap, sizeof(char));	// realloc the array with new capacity
+			if (!result) return NULL;
+		}
+		result[curr_size++] = c;	// add it to the end and increment size
+
+		c = getchar();				// get a new character
+	}
+	result[curr_size] = '\0';
+	return result;
+}
+
+void input_to_list(StrList *list)
+{
+
+	size_t n;
+	scanf("%zu ", &n);
 	for (size_t i = 0; i < n; ++i)
 	{
-		char word[MAX_STR_LEN];
-		scanf("%s", word);
-		StrList_insertLast(list, word);
+		char *word = input_str();
+		if (!word)
+		{
+			fprintf(stderr, "Failed to allocate memory for word");
+			exit(1);
+		}
+		StrList_insertLast(list, word);		// this will copy the word so no danger in freeing it after
+		free(word);
 	}
 }
 
@@ -17,6 +48,11 @@ int main(void)
 	int quit = FALSE;
 	int action;
 	StrList *list = StrList_alloc();
+	if (!list)
+	{
+		fprintf(stderr, "Failed to allocate list");
+		exit(1);
+	}
 	do
 	{
 		size_t index;
@@ -25,7 +61,7 @@ int main(void)
 		switch (action)
 		{
 		case 1:
-			input_list(list);
+			input_to_list(list);
 			break;
 		case 2:
 			scanf("%zu %s", &index, word);
@@ -42,11 +78,11 @@ int main(void)
 			StrList_printAt(list, index);
 			break;
 		case 6:
-			StrList_printLen(list);
+			printf("%d\n", StrList_printLen(list));
 			break;
 		case 7:
 			scanf("%s", word);
-			printf("%zu\n", StrList_count(list, word));		// FIXME: wrong type returned
+			printf("%d\n", StrList_count(list, word));
 			break;
 		case 8:
 			scanf("%s", word);
@@ -66,7 +102,7 @@ int main(void)
 			StrList_sort(list);
 			break;
 		case 13:
-			printf("%s", StrList_isSorted(list) ? "List is sorted" : "List is not sorted");
+			printf("%s\n", StrList_isSorted(list) ? "List is sorted" : "List is not sorted");		// TODO: format?
 			break;
 		case 0:
 			quit = TRUE;
