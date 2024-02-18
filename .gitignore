@@ -57,6 +57,7 @@ dkms.conf
 01/src/maindrec
 02/src/my_graph
 02/src/my_Knapsack
+03/src/StrList
 
 
 # Vim swap files
