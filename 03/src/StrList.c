@@ -66,6 +66,7 @@ StrList *StrList_alloc()
 */
 void StrList_removeAll(StrList *list)
 {
+	assert(list);
 	while (list->head)
 	{
 		StrNode *removed = list->head;
@@ -91,6 +92,7 @@ void StrList_free(StrList *list)
  */
 size_t StrList_size(const StrList *list)
 {
+	assert(list);
 	return list->len;
 }
 
@@ -99,6 +101,7 @@ size_t StrList_size(const StrList *list)
  */
 void StrList_insertLast(StrList *list, const char *data)
 {
+	assert(list);
 	if (list->head == NULL)
 	{
 		list->head = StrNode_create(data);
@@ -119,10 +122,11 @@ void StrList_insertLast(StrList *list, const char *data)
 */
 void StrList_insertAt(StrList *list, const char *data, int index)
 {
-	assert(index <= (int) list->len && "Cannot insert at index larger than end");
+	assert(list && index <= (int) list->len);
 	if (index == 0)
 	{
 		StrNode *new = StrNode_create(data);
+		assert(new);
 		new->next = list->head;
 		list->head = new;
 		list->len += 1;
@@ -145,6 +149,7 @@ void StrList_insertAt(StrList *list, const char *data, int index)
  */
 char *StrList_firstData(const StrList *list)
 {
+	assert(list && list->len > 0);
 	return list->head->data;
 }
 
@@ -153,6 +158,7 @@ char *StrList_firstData(const StrList *list)
  */
 void StrList_print(const StrList *list)
 {
+	assert(list);
 	StrNode *p = list->head;
 	while (p)
 	{
@@ -167,7 +173,7 @@ void StrList_print(const StrList *list)
 */
 void StrList_printAt(const StrList *list, int index)
 {
-	assert(index < (int) list->len && "Cannot print index larger than length");
+	assert(list && index < (int) list->len);
 	StrNode *p = list->head;
 	while (index > 0)
 	{
@@ -182,6 +188,7 @@ void StrList_printAt(const StrList *list, int index)
 */
 int StrList_printLen(const StrList *list)
 {
+	assert(list);
 	size_t result = 0;
 	StrNode *p = list->head;
 	while (p)
@@ -197,6 +204,7 @@ Given a string, return the number of times it exists in the list.
 */
 int StrList_count(StrList *list, const char *data)
 {
+	assert(list);
 	int result = 0;
 	StrNode *p = list->head;
 	while (p)
@@ -212,8 +220,9 @@ int StrList_count(StrList *list, const char *data)
 */
 void StrList_remove(StrList *list, const char *data)
 {
+	assert(list);
 	if (list->len == 0) return;
-	while (strcmp(list->head->data, data) == 0)
+	while (list->head && strcmp(list->head->data, data) == 0)
 	{
 		StrNode *removed = list->head;
 		list->head = removed->next;
@@ -223,7 +232,7 @@ void StrList_remove(StrList *list, const char *data)
 	StrNode *p = list->head;
 	while (p->next)
 	{
-		while (strcmp(p->next->data, data) == 0)
+		while (p->next && strcmp(p->next->data, data) == 0)
 		{
 			StrNode *removed = p->next;
 			p->next = removed->next;
@@ -239,7 +248,7 @@ void StrList_remove(StrList *list, const char *data)
 */
 void StrList_removeAt(StrList *list, int index)
 {
-	assert(index < (int) list->len && "Cannot delete index larger than length");
+	assert(list && index < (int) list->len);
 	if (index == 0)
 	{
 		StrNode *removed = list->head;
@@ -266,6 +275,7 @@ void StrList_removeAt(StrList *list, int index)
  */
 int StrList_isEqual(const StrList *list1, const StrList *list2)
 {
+	assert(list1 && list2);
 	if (list1->len != list2->len) return FALSE;
 	StrNode *p1 = list1->head;
 	StrNode *p2 = list2->head;
@@ -282,8 +292,9 @@ int StrList_isEqual(const StrList *list1, const StrList *list2)
  * Clones the given StrList. 
  * It's the user responsibility to free it with StrList_free.
  */
-StrList* StrList_clone(const StrList *original)
+StrList *StrList_clone(const StrList *original)
 {
+	assert(original);
 	StrList *result = StrList_alloc();
 	if (!result) return NULL;
 	if (original->len == 0) return result;
@@ -304,6 +315,7 @@ StrList* StrList_clone(const StrList *original)
  */
 void StrList_reverse(StrList *list)
 {
+	assert(list);
 	if (list->len == 0) return;
 	StrNode *prev = NULL;			// the previous node, i.e. the first node in the reverse
 	StrNode *curr = list->head;	// the current node being moved to the reverse list
@@ -333,6 +345,7 @@ void StrList_sort(StrList *list)
  */
 int StrList_isSorted(StrList *list)
 {
+	assert(list);
 	if (list->len == 0) return TRUE;
 	StrNode *p = list->head;
 	while (p->next)
