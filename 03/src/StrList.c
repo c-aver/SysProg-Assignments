@@ -10,6 +10,11 @@ typedef struct _StrNode {
 	struct _StrNode *next;
 } StrNode;
 
+/**
+ * Creates a new StrNode and copies the data into it
+ * The allocated data inside the node is owned by the node and should only be freed by it
+ * Make sure to call StrNode_free
+*/
 StrNode *StrNode_create(const char *data)
 {
 	StrNode *result = malloc(sizeof(StrNode));
@@ -25,12 +30,19 @@ StrNode *StrNode_create(const char *data)
 	return result;
 }
 
+/**
+ * Frees the node and its inner data
+*/
 void StrNode_free(StrNode *node)
 {
+	if (node == NULL) return;
 	free(node->data);
 	free(node);
 }
 
+/**
+ * A struct for a list of strings
+*/
 typedef struct _StrList {
 	StrNode *head;
 	size_t len;
@@ -50,72 +62,73 @@ StrList *StrList_alloc()
 }
 
 /*
-	Given a list, remove all elements
+	Given a list, remove all elements, also frees them to prevent memory leak
 */
-void StrList_removeAll(StrList* StrList)
+void StrList_removeAll(StrList *list)
 {
-	while (StrList->head)
+	while (list->head)
 	{
-		StrNode *removed = StrList->head;
-		StrList->head = removed->next;
+		StrNode *removed = list->head;
+		list->head = removed->next;
 		StrNode_free(removed);
 	}
-	StrList->len = 0;
+	list->len = 0;
 }
 
 /*
- * Frees the memory and resources allocated to StrList.
+ * Frees the memory and resources allocated to StrList, including all nodes
  * If StrList==NULL does nothing (same as free).
  */
-void StrList_free(StrList* StrList)
+void StrList_free(StrList *list)
 {
-	StrList_removeAll(StrList);
-	free(StrList);
+	if (list == NULL) return;
+	StrList_removeAll(list);
+	free(list);
 }
 
 /*
  * Returns the number of elements in the StrList.
  */
-size_t StrList_size(const StrList* StrList)
+size_t StrList_size(const StrList *list)
 {
-	return StrList->len;
+	return list->len;
 }
 
 /*
  * Inserts an element in the end of the StrList.
  */
-void StrList_insertLast(StrList* StrList, const char* data)
+void StrList_insertLast(StrList *list, const char *data)
 {
-	if (StrList->head == NULL)
+	if (list->head == NULL)
 	{
-		StrList->head = StrNode_create(data);
-		StrList->len += 1;
+		list->head = StrNode_create(data);
+		list->len += 1;
 		return;
 	}
-	StrNode *p = StrList->head;
+	StrNode *p = list->head;
 	while (p->next)
 	{
 		p = p->next;
 	}
 	p->next = StrNode_create(data);
-	StrList->len += 1;
+	list->len += 1;
 }
 
 /*
 * Inserts an element at given index
 */
-void StrList_insertAt(StrList* StrList, const char* data, int index)
+void StrList_insertAt(StrList *list, const char *data, int index)
 {
-	assert(index <= (int) StrList->len && "Cannot insert at index larger than end");
+	assert(index <= (int) list->len && "Cannot insert at index larger than end");
 	if (index == 0)
 	{
 		StrNode *new = StrNode_create(data);
-		new->next = StrList->head;
-		StrList->head = new;
-		StrList->len += 1;
+		new->next = list->head;
+		list->head = new;
+		list->len += 1;
 		return;
 	}
-	StrNode *p = StrList->head;
+	StrNode *p = list->head;
 	while (index > 1)
 	{
 		p = p->next;
@@ -124,23 +137,23 @@ void StrList_insertAt(StrList* StrList, const char* data, int index)
 	StrNode *new = StrNode_create(data);
 	new->next = p->next;
 	p->next = new;
-	StrList->len += 1;
+	list->len += 1;
 }
 
 /*
  * Returns the StrList first data.
  */
-char *StrList_firstData(const StrList* StrList)
+char *StrList_firstData(const StrList *list)
 {
-	return StrList->head->data;
+	return list->head->data;
 }
 
 /*
  * Prints the StrList to the standard output.
  */
-void StrList_print(const StrList* StrList)
+void StrList_print(const StrList *list)
 {
-	StrNode *p = StrList->head;
+	StrNode *p = list->head;
 	while (p)
 	{
 		printf("%s ", p->data);
@@ -152,10 +165,10 @@ void StrList_print(const StrList* StrList)
 /*
  Prints the word at the given index to the standard output.
 */
-void StrList_printAt(const StrList* StrList, int index)
+void StrList_printAt(const StrList *list, int index)
 {
-	assert(index < (int) StrList->len && "Cannot print index larger than length");
-	StrNode *p = StrList->head;
+	assert(index < (int) list->len && "Cannot print index larger than length");
+	StrNode *p = list->head;
 	while (index > 0)
 	{
 		p = p->next;
@@ -167,10 +180,10 @@ void StrList_printAt(const StrList* StrList, int index)
 /*
  * Return the amount of chars in the list.
 */
-int StrList_printLen(const StrList* StrList)
+int StrList_printLen(const StrList *list)
 {
 	size_t result = 0;
-	StrNode *p = StrList->head;
+	StrNode *p = list->head;
 	while (p)
 	{
 		result += strlen(p->data);
@@ -182,10 +195,10 @@ int StrList_printLen(const StrList* StrList)
 /*
 Given a string, return the number of times it exists in the list.
 */
-int StrList_count(StrList* StrList, const char* data)
+int StrList_count(StrList *list, const char *data)
 {
 	int result = 0;
-	StrNode *p = StrList->head;
+	StrNode *p = list->head;
 	while (p)
 	{
 		if (strcmp(p->data, data) == 0) result += 1;
@@ -197,16 +210,16 @@ int StrList_count(StrList* StrList, const char* data)
 /*
 	Given a string and a list, remove all the appearences of this string in the list.
 */
-void StrList_remove(StrList* StrList, const char* data)
+void StrList_remove(StrList *list, const char *data)
 {
-	while (strcmp(StrList->head->data, data) == 0)
+	while (strcmp(list->head->data, data) == 0)
 	{
-		StrNode *removed = StrList->head;
-		StrList->head = removed->next;
+		StrNode *removed = list->head;
+		list->head = removed->next;
 		StrNode_free(removed);
-		StrList->len -= 1;
+		list->len -= 1;
 	}
-	StrNode *p = StrList->head;
+	StrNode *p = list->head;
 	while (p)
 	{
 		while (strcmp(p->next->data, data) == 0)
@@ -214,7 +227,7 @@ void StrList_remove(StrList* StrList, const char* data)
 			StrNode *removed = p->next;
 			p->next = removed->next;
 			StrNode_free(removed);
-			StrList->len -= 1;
+			list->len -= 1;
 		}
 		p = p->next;
 	}
@@ -223,18 +236,18 @@ void StrList_remove(StrList* StrList, const char* data)
 /*
 	Given an index and a list, remove the string at that index.
 */
-void StrList_removeAt(StrList* StrList, int index)
+void StrList_removeAt(StrList *list, int index)
 {
-	assert(index < (int) StrList->len && "Cannot delete index larger than length");
+	assert(index < (int) list->len && "Cannot delete index larger than length");
 	if (index == 0)
 	{
-		StrNode *removed = StrList->head;
-		StrList->head = removed->next;
+		StrNode *removed = list->head;
+		list->head = removed->next;
 		StrNode_free(removed);
-		StrList->len -= 1;
+		list->len -= 1;
 		return;
 	}
-	StrNode *p = StrList->head;
+	StrNode *p = list->head;
 	while (index > 1)
 	{
 		p = p->next;
@@ -243,18 +256,18 @@ void StrList_removeAt(StrList* StrList, int index)
 	StrNode *removed = p->next;
 	p->next = removed->next;
 	StrNode_free(removed);
-	StrList->len -= 1;
+	list->len -= 1;
 }
 
 /*
  * Checks if two StrLists have the same elements
  * returns 0 if not and any other number if yes
  */
-int StrList_isEqual(const StrList* StrList1, const StrList* StrList2)
+int StrList_isEqual(const StrList *list1, const StrList *list2)
 {
-	if (StrList1->len != StrList2->len) return FALSE;
-	StrNode *p1 = StrList1->head;
-	StrNode *p2 = StrList2->head;
+	if (list1->len != list2->len) return FALSE;
+	StrNode *p1 = list1->head;
+	StrNode *p2 = list2->head;
 	while (p1)
 	{
 		if (strcmp(p1->data, p2->data) != 0) return FALSE;
@@ -288,11 +301,11 @@ StrList* StrList_clone(const StrList *original)
 /*
  * Reverses the given StrList.
  */
-void StrList_reverse(StrList *StrList)
+void StrList_reverse(StrList *list)
 {
-	if (StrList->len == 0) return;
+	if (list->len == 0) return;
 	StrNode *prev = NULL;			// the previous node, i.e. the first node in the reverse
-	StrNode *curr = StrList->head;	// the current node being moved to the reverse list
+	StrNode *curr = list->head;	// the current node being moved to the reverse list
 	StrNode *next = NULL;			// the next node
 	while (curr)
 	{
@@ -301,15 +314,15 @@ void StrList_reverse(StrList *StrList)
 		prev = curr;				// set curr to the new head of the reverse
 		curr = next;				// move curr to the next
 	}
-	StrList->head = prev;			// the new head is the head of the reverse
+	list->head = prev;			// the new head is the head of the reverse
 }
 
 /*
  * Sort the given list in lexicographical order 
  */
-void StrList_sort(StrList *StrList)
+void StrList_sort(StrList *list)
 {
-	(void) StrList;
+	(void) list;
 	assert(FALSE && "unimplemented");	// TODO
 }
 
@@ -317,10 +330,10 @@ void StrList_sort(StrList *StrList)
  * Checks if the given list is sorted in lexicographical order
  * returns 1 for sorted,   0 otherwise
  */
-int StrList_isSorted(StrList* StrList)
+int StrList_isSorted(StrList *list)
 {
-	if (StrList->len == 0) return TRUE;
-	StrNode *p = StrList->head;
+	if (list->len == 0) return TRUE;
+	StrNode *p = list->head;
 	while (p->next)
 	{
 		if (strcmp(p->data, p->next->data) > 0) return FALSE;
