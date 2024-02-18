@@ -13,7 +13,13 @@ typedef struct _StrNode {
 StrNode *StrNode_create(const char *data)
 {
 	StrNode *result = malloc(sizeof(StrNode));
+	if (!result) return NULL;
 	result->data = malloc(strlen(data));
+	if (!result->data)
+	{
+		free(result);
+		return NULL;
+	}
 	strcpy(result->data, data);
 	result->next = NULL;
 	return result;
@@ -37,6 +43,7 @@ typedef struct _StrList {
 StrList *StrList_alloc()
 {
 	StrList *result = malloc(sizeof(StrList));
+	if (!result) return NULL;
 	result->head = NULL;
 	result->len = 0;
 	return result;
@@ -139,6 +146,7 @@ void StrList_print(const StrList* StrList)
 		printf("%s ", p->data);
 		p = p->next;
 	}
+	printf("\n");
 }
 
 /*
@@ -242,7 +250,19 @@ void StrList_removeAt(StrList* StrList, int index)
  * Checks if two StrLists have the same elements
  * returns 0 if not and any other number if yes
  */
-int StrList_isEqual(const StrList* StrList1, const StrList* StrList2); 	// TODO
+int StrList_isEqual(const StrList* StrList1, const StrList* StrList2)
+{
+	if (StrList1->len != StrList2->len) return FALSE;
+	StrNode *p1 = StrList1->head;
+	StrNode *p2 = StrList2->head;
+	while (p1)
+	{
+		if (strcmp(p1->data, p2->data) != 0) return FALSE;
+		p1 = p1->next;
+		p2 = p2->next;
+	}
+	return TRUE;
+}
 
 /*
  * Clones the given StrList. 
@@ -251,6 +271,7 @@ int StrList_isEqual(const StrList* StrList1, const StrList* StrList2); 	// TODO
 StrList* StrList_clone(const StrList *original)
 {
 	StrList *result = StrList_alloc();
+	if (!result) return NULL;
 	if (original->len == 0) return result;
 	result->head = StrNode_create(original->head->data);
 	StrNode *on = original->head->next;	// next node from original to copy
@@ -265,14 +286,32 @@ StrList* StrList_clone(const StrList *original)
 }
 
 /*
- * Reverces the given StrList. 
+ * Reverses the given StrList.
  */
-void StrList_reverse( StrList* StrList);	// TODO
+void StrList_reverse(StrList *StrList)
+{
+	if (StrList->len == 0) return;
+	StrNode *prev = NULL;			// the previous node, i.e. the first node in the reverse
+	StrNode *curr = StrList->head;	// the current node being moved to the reverse list
+	StrNode *next = NULL;			// the next node
+	while (curr)
+	{
+		next = curr->next;			// set the next
+		curr->next = prev;			// change the current to the beginning of the reverse list by setting its next to the head
+		prev = curr;				// set curr to the new head of the reverse
+		curr = next;				// move curr to the next
+	}
+	StrList->head = prev;			// the new head is the head of the reverse
+}
 
 /*
  * Sort the given list in lexicographical order 
  */
-void StrList_sort( StrList* StrList);		// TODO
+void StrList_sort(StrList *StrList)
+{
+	(void) StrList;
+	assert(FALSE && "unimplemented");	// TODO
+}
 
 /*
  * Checks if the given list is sorted in lexicographical order
