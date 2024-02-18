@@ -301,7 +301,7 @@ void StrList_reverse(StrList *list)
 {
 	assert(list);	// make sure not passed NULL
 	if (list->len == 0) return;	// if no elements is it its own reverse
-	StrNode *prev;				// the previous node, i.e. the first node in the reverse, needed at the end
+	StrNode *prev = NULL;			// the previous node, i.e. the first node in the reverse, needed at the end, initially NULL to be set as the head's new next
 	for (StrNode *p = list->head; p;)	// go through the nodes
 	{
 		StrNode *next = p->next;	// save the next node
@@ -341,7 +341,7 @@ int StrList_isSorted(StrList *list)
 {
 	assert(list);	// make sure not passed NULL
 	if (list->len == 0) return TRUE;	// if no elements it must be sorted
-	for (StrNode *p = list->head; p; p = p->next)	// iterate through nodes that have a next
+	for (StrNode *p = list->head; p -> next; p = p->next)	// iterate through nodes that have a next
 		if (strcmp(p->data, p->next->data) > 0) return FALSE;	// if higher than next in lexicographical order the list is not sorted
 	return TRUE;	// if went through whole list then it is sorted
 }
