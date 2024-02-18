@@ -16,5 +16,8 @@ $(LIB).o: $(LIB).c $(MF)
 clean:
 	rm *.o $(LIB)
 
+run: $(LIB)
+	./$(LIB)
+
 .SUFFIXES:
-.PHONY: clean
+.PHONY: clean run
