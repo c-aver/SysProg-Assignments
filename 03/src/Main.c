@@ -10,7 +10,7 @@ char *input_str(void)
 {
 	// we will set up a dynamic array inside result with capacity and size
 	size_t cap = 1, size = 0;
-	char *result = calloc(cap, sizeof(char));	// initial allocation
+	char *result = malloc(cap * sizeof(char));	// initial allocation
 	if (!result) return NULL;	// failed to calloc
 	char c = getchar();			// get first character
 	while (c != EOF && !isspace(c))		// while character is not whitespace
@@ -19,7 +19,7 @@ char *input_str(void)
 								// -1 for the null terminator we will insert at the end
 		{
 			cap *= 2;		// double capacity
-			result = reallocarray(result, cap, sizeof(char));	// realloc the array with new capacity
+			result = realloc(result, cap * sizeof(char));	// realloc the array with new capacity
 			if (!result) return NULL;	// failed to reallocarray
 		}
 		result[size++] = c;	// add the character to the end and increment size
