@@ -5,8 +5,6 @@
 #define FALSE 0
 #define TRUE 1
 
-#define MAX_STR_LEN 20		// TODO: what should this be?
-
 /********************************************************************************
  *
  * A StrList library.
