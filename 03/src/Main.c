@@ -23,7 +23,6 @@ char *input_str(void)
 			if (!result) return NULL;	// failed to reallocarray
 		}
 		result[size++] = c;	// add the character to the end and increment size
-
 		c = getchar();		// get next character
 	}
 	result[size] = '\0';	// add null terminator at the end
