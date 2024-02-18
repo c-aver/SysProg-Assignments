@@ -19,7 +19,7 @@ StrNode *StrNode_create(const char *data)
 {
 	StrNode *result = malloc(sizeof(StrNode));
 	if (!result) return NULL;
-	result->data = malloc(strlen(data));
+	result->data = malloc(strlen(data) + 1);
 	if (!result->data)
 	{
 		free(result);
@@ -174,7 +174,7 @@ void StrList_printAt(const StrList *list, int index)
 		p = p->next;
 		index -= 1;
 	}
-	printf("%s", p->data);
+	printf("%s\n", p->data);
 }
 
 /*
@@ -212,6 +212,7 @@ int StrList_count(StrList *list, const char *data)
 */
 void StrList_remove(StrList *list, const char *data)
 {
+	if (list->len == 0) return;
 	while (strcmp(list->head->data, data) == 0)
 	{
 		StrNode *removed = list->head;
@@ -220,7 +221,7 @@ void StrList_remove(StrList *list, const char *data)
 		list->len -= 1;
 	}
 	StrNode *p = list->head;
-	while (p)
+	while (p->next)
 	{
 		while (strcmp(p->next->data, data) == 0)
 		{
