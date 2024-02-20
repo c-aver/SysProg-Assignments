@@ -159,7 +159,11 @@ char *StrList_firstData(const StrList *list)
 void StrList_print(const StrList *list)
 {
 	assert(list);		// make sure not passed NULL
-	if (list->len == 0) return;		// on empty list, skip
+	if (list->len == 0) // on empty list
+	{
+		printf("\n");	// print only line break
+		return;			// and exit
+	}
 	printf("%s", list->head->data);	// print first string without space
 	for (StrNode *p = list->head->next; p; p = p->next)	// iterate through the rest of the list
 		printf(" %s", p->data);						// print each data with a space before
@@ -214,13 +218,14 @@ void StrList_remove(StrList *list, const char *data)
 	if (list->len == 0) return;		// if no nodes we're done
 	while (list->head && strcmp(list->head->data, data) == 0)	// while there are nodes and the first one is what we're looking for
 	{
-		StrNode *removed = list->head;		// remove the head same as before
+		StrNode *removed = list->head;		// remove the head same as removeAt with index 0
 		list->head = removed->next;
 		StrNode_free(removed);
 		list->len -= 1;
 	}
-	for (StrNode *p = list->head; p->next; p = p->next)		// itereate through all other nodes
-		while (p->next && strcmp(p->next->data, data) == 0)	// while there is a next node and it is what we're looking for
+	if (!list->head) return;				// we emptied the list
+	for (StrNode *p = list->head; p; p = p->next)	// iterate through all other nodes
+		while (p->next && strcmp(p->next->data, data) == 0)		// while there is a next node and it is what we're looking for
 		{
 			StrNode *removed = p->next;		// remove the next
 			p->next = removed->next;
@@ -285,11 +290,14 @@ StrList *StrList_clone(const StrList *original)
 	if (!result) return NULL;	// check alloc fail
 	if (original->len == 0) return result;	// if the original is empty we're done
 	result->head = StrNode_create(original->head->data);	// copy the head
+	assert(result->head);		// make sure creation didn't fail
 	StrNode *on = original->head->next;	// next node from original to copy
 	StrNode *nn = result->head;			// last node in new
 	while (on)	// while there are more nodes to copy
 	{
-		nn = nn->next = StrNode_create(on->data);	// create new node with on's data, set it as the next node of nn, and move nn forward to it
+		nn->next = StrNode_create(on->data);	// create new node with on's data, set it as the next node of nn
+		assert(nn->next);	// make sure creation didn't fail
+		nn = nn->next;		// move nn forward
 		on = on->next;		// move on forward
 	}
 	result->len = original->len;	// copy the length

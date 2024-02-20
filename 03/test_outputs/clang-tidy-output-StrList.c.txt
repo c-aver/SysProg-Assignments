@@ -1,0 +1,4 @@
+/home/chaim/Uni/SysProgA/SysProg-Assignments/03/src/StrList.c:28:2: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+        strcpy(result->data, data);             // copy the data into the new memory
+        ^
+/home/chaim/Uni/SysProgA/SysProg-Assignments/03/src/StrList.c:28:2: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
