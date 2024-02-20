@@ -159,7 +159,8 @@ char *StrList_firstData(const StrList *list)
 void StrList_print(const StrList *list)
 {
 	assert(list);		// make sure not passed NULL
-	if (list->len > 0) printf("%s", list->head->data);	// print first string without space
+	if (list->len == 0) return;		// on empty list, skip
+	printf("%s", list->head->data);	// print first string without space
 	for (StrNode *p = list->head->next; p; p = p->next)	// iterate through the rest of the list
 		printf(" %s", p->data);						// print each data with a space before
 	printf("\n");									// print line end
