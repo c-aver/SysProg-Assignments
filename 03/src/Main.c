@@ -35,7 +35,7 @@ char *input_str(void)
 void input_to_list(StrList *list)
 {
 	size_t n;
-	scanf("%zu", &n);		// TODO: should be inputted with `A`?
+	scanf("%zu", &n);
 	size_t prev_len = StrList_size(list);
 	while (StrList_size(list) < prev_len + n)
 	{
@@ -113,7 +113,7 @@ int main(void)
 			StrList_sort(list);
 			break;
 		case 13:	// check if list is sorted
-			printf("%s\n", StrList_isSorted(list) ? "List is sorted" : "List is not sorted");		// TODO: format?
+			printf("%s\n", StrList_isSorted(list) ? "true" : "false");		// TODO: format?
 			break;
 		case 0:		// quit
 			quit = TRUE;
