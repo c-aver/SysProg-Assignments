@@ -93,7 +93,7 @@ compare-files() {
 
 test-valgrind() {
 	echo -e "${NOTE} Running valgrind with input #$1:"
-	valgrind --log-file="$test_outputs_dir/valgrind-output-$1.txt" -s $src_dir/StrList < $inputs_dir/input$1.txt > $test_outputs_dir/my_output$1.txt
+	valgrind --leak-check=full --log-file="$test_outputs_dir/valgrind-output-$1.txt" -s $src_dir/StrList < $inputs_dir/input$1.txt > $test_outputs_dir/my_output$1.txt
 	echo "Done, output can be found in $test_outputs_dir/valgrind-output-$1.txt"
 	echo "Comparing to output:"
 	compare-files $outputs_dir/output$1.txt $test_outputs_dir/my_output$1.txt
