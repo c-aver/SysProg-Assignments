@@ -5,6 +5,11 @@
 
 #include "StrList.h"
 
+/**
+ * A struct for one node in the list, contains a pointer to the next node and some data
+ * The data is a char * pointing at some string, this data is "owned" by the node.
+ * This means the node is responsible for allocating it when it is created and freeing it when it is destroyed
+*/
 typedef struct _StrNode {
 	char *data;				// the string contained by the node, the memory is "owned" by this node
 	struct _StrNode *next;	// the next node in the list
@@ -18,7 +23,7 @@ typedef struct _StrNode {
 StrNode *StrNode_create(const char *data)
 {
 	StrNode *result = malloc(sizeof(StrNode));	// allocate memory for the node
-	if (!result) return NULL;					// cheack for malloc fail
+	if (!result) return NULL;					// check for malloc fail
 	result->data = malloc(strlen(data) + 1);	// allocate memory for node's data (as much as needed including null terminator)
 	if (!result->data)		// check for malloc fail
 	{
@@ -105,6 +110,7 @@ void StrList_insertLast(StrList *list, const char *data)
 	if (list->head == NULL)	// if list is empty need to insert as head
 	{
 		list->head = StrNode_create(data);	// create the new node with the data
+		assert(list->head);	// make sure it didn't fail
 		list->len += 1;		// set new length
 		return;		// we're done
 	}
@@ -114,6 +120,7 @@ void StrList_insertLast(StrList *list, const char *data)
 		p = p->next;			// move to next
 	}
 	p->next = StrNode_create(data);	// set the next of p (which is the last) to the newly created node
+	assert(p->next);
 	list->len += 1;					// increment the size
 }
 
@@ -139,6 +146,7 @@ void StrList_insertAt(StrList *list, const char *data, int index)
 		index -= 1;					// decrement target distance
 	}
 	StrNode *new = StrNode_create(data);	// create new node
+	assert(new);
 	new->next = p->next;					// set its next to the next of the one before it
 	p->next = new;							// set it as the next of the one before it
 	list->len += 1;							// increment list length
@@ -351,7 +359,7 @@ int StrList_isSorted(StrList *list)
 {
 	assert(list);	// make sure not passed NULL
 	if (list->len == 0) return TRUE;	// if no elements it must be sorted
-	for (StrNode *p = list->head; p -> next; p = p->next)	// iterate through nodes that have a next
+	for (StrNode *p = list->head; p->next; p = p->next)	// iterate through nodes that have a next
 		if (strcmp(p->data, p->next->data) > 0) return FALSE;	// if higher than next in lexicographical order the list is not sorted
 	return TRUE;	// if went through whole list then it is sorted
 }

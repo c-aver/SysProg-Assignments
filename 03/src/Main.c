@@ -34,18 +34,18 @@ char *input_str(void)
 */
 void input_to_list(StrList *list)
 {
-	size_t n;
-	scanf("%zu", &n);
-	size_t prev_len = StrList_size(list);
-	while (StrList_size(list) < prev_len + n)
+	size_t n;			// number of words to input
+	scanf("%zu", &n);	// read number of words from user
+	size_t prev_len = StrList_size(list);	// save previous length
+	while (StrList_size(list) < prev_len + n)	// run as long as not enough words were added
 	{
-		char *word = input_str();
-		if (!word)
+		char *word = input_str();	// take a word
+		if (!word)					// error checking
 		{
 			fprintf(stderr, "Failed to allocate memory for word");
 			exit(1);
 		}
-		if (word[0]) StrList_insertLast(list, word);		// this will copy the word so no danger in freeing it after
+		if (word[0]) StrList_insertLast(list, word);		// this will copy the word so no danger in freeing it after, only if word is not empty
 		free(word);							// free the inputted word
 	}
 }
@@ -113,7 +113,7 @@ int main(void)
 			StrList_sort(list);
 			break;
 		case 13:	// check if list is sorted
-			printf("%s\n", StrList_isSorted(list) ? "true" : "false");		// TODO: format?
+			printf("%s\n", StrList_isSorted(list) ? "true" : "false");
 			break;
 		case 0:		// quit
 			quit = TRUE;
